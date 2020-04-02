@@ -75,15 +75,49 @@ public class controller {
     public ResponseEntity<item_list> update(@RequestBody item_list newItem, @PathVariable Long id) {
     	 Optional<item_list> updatingDATA = item_list_repo.findById(id);
     	 if (updatingDATA.isPresent()) {
-    		 item_list _tutorial = updatingDATA.get();
-    	      _tutorial.setItem_name(newItem.getItem_name());
-    	      _tutorial.setItem_price(newItem.getItem_price());
-    	      return new ResponseEntity<>(item_list_repo.save(_tutorial), HttpStatus.OK);
+    		 item_list update = updatingDATA.get();
+    		 update.setItem_name(newItem.getItem_name());
+    		 update.setItem_price(newItem.getItem_price());
+    		 update.setItem_no(newItem.getItem_no());
+    	      return new ResponseEntity<>(item_list_repo.save(update), HttpStatus.OK);
     	    } else {
     	      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     	    }
  
        
+    }
+    @PutMapping("/cart/{id}")
+    public Map<String,Object> cartingItems(@RequestBody item_list newItem, @PathVariable Long id) {
+    	Map<String,Object> map=new HashMap<String, Object>();
+    	 Optional<item_list> updatingDATA = item_list_repo.findById(id);
+    	 if (updatingDATA.isPresent()) {
+    		 item_list update = updatingDATA.get();
+    		 if(update.getItem_no() == 0)
+    		 {
+    			 map.put("message","outr of stock" );
+    			 map.put("status",false);
+    		 }
+    		 else if(newItem.getItem_no() >update.getItem_no())
+    		 {
+    			 map.put("message","Only "+update.getItem_no()+" item's available" );
+    			 map.put("status",false);
+    		 }
+    		 
+    		 else {
+    			 int remainItem=update.getItem_no()-newItem.getItem_no();
+    			 update.setItem_no(remainItem);
+    			 item_list_repo.save(update);
+    			 map.put("status",true);
+    			 map.put("message",remainItem+" Item's remaining" );
+    		 }
+    		 
+    	     
+    	    } else {
+    	       map.put("message","Item not available" );
+    	       map.put("status",false);
+    	    }
+ 
+       return map;
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable("id") long id) {

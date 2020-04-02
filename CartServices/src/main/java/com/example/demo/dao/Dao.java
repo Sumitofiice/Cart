@@ -26,10 +26,11 @@ public class Dao {
 //		EntityManagerFactory emf = Persistence.createEntityManagerFactory("item_list");
 //		EntityManager em = emf.createEntityManager();
 		try {
-			int id = (int) map.get("id");
-			Long Id=new Long(id);
+//			int id = (int) map.get("id");
+//			Long Id=new Long(id);
 			String item_name = map.get("item_name").toString();
 			String item_price = map.get("item_price").toString();
+			int item_no = (int) map.get("item_no");
 //	List<item_list> employeeList = item_list_repo.findAll();
 //	
 //	System.out.println(employeeList);
@@ -40,6 +41,7 @@ public class Dao {
 //			itemList.setId(Id);
 			itemList.setItem_name(item_name);
 			itemList.setItem_price(item_price);
+			itemList.setItem_no(item_no);
 			item_list_repo.save(itemList);
 //			em.persist(itemList);
 			result.put("Status",true);

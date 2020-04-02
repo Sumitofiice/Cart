@@ -15,7 +15,7 @@ public class item_list implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(name="item_name")
@@ -23,6 +23,9 @@ public class item_list implements Serializable {
 	
 	@Column(name="item_price")
 	private String item_price;
+	
+	@Column(name="item_no")
+	private int item_no;
 
 	public Long getId() {
 		return id;
@@ -48,8 +51,22 @@ public class item_list implements Serializable {
 		this.item_price = item_price;
 	}
 
+	public int getItem_no() {
+		return item_no;
+	}
+
+	public void setItem_no(int item_no) {
+		this.item_no = item_no;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
-		return "item_list [id=" + id + ", item_name=" + item_name + ", item_price=" + item_price + "]";
+		return "item_list [id=" + id + ", item_name=" + item_name + ", item_price=" + item_price + ", item_no="
+				+ item_no + "]";
 	}
+	
 }
